@@ -6,7 +6,7 @@ from typing import List
 import discord
 from discord.ext import commands
 
-token = "MTAzNjc4NjEwNzYzMjg2NTI4Mg.GdI2WM.gVOBhp9dgoIjWgmTWrBRInOxVMIRbbCAgFiYbA"
+token = ""
 
 intents = discord.Intents.all()
 intents.members = True
