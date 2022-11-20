@@ -2,11 +2,12 @@ import asyncio
 import logging
 import logging.handlers
 from typing import List
+import os
 
 import discord
 from discord.ext import commands
 
-token = ""
+token = open(r".\tokens\discordtoken.txt").readline()
 
 intents = discord.Intents.all()
 intents.members = True
@@ -21,6 +22,7 @@ class smallpop(commands.Bot):
 
     async def setup_hook(self) -> None:
         for cog in self.initial_exts:
+            print(cog + " loaded")
             await self.load_extension(cog)
 
 
@@ -33,7 +35,10 @@ async def main():
     )
 
     discord.utils.setup_logging(handler=handler, root=False)
-    exts = ['commands.fun']
+    exts = []
+    for cog in os.listdir("./commands"):
+        if cog.endswith(".py"):
+            exts.append("commands." + cog[:-3])
     async with smallpop(initial_exts=exts, command_prefix=prefix, intents=intents) as bot:
         await bot.start(token=token)
 
