@@ -1,5 +1,11 @@
-import asyncio
+import aiohttp
 from discord.ext import commands
+import asyncio
+import discord
+
+weather_token = open(r".\tokens\weathertoken.txt").readline()
+
+weather_base_url = "http://api.openweathermap.org/data/2.5/weather?"
 
 
 class Fun(commands.Cog):
@@ -12,6 +18,37 @@ class Fun(commands.Cog):
         async with ctx.channel.typing():
             await asyncio.sleep(1)
             await ctx.reply(f'Hello {member.name}')
+
+    @commands.command(name="weather")
+    async def getweather(self, ctx, city: str, unit: str = None):
+        weather_url = weather_base_url + "appid=" + weather_token + "&q=" + city
+        async with aiohttp.ClientSession() as session:
+            async with session.get(weather_url) as answer:
+                x = await answer.json()
+                y = x["main"]
+                embed = discord.Embed(title="Weather in " + city.capitalize() + "!")
+                if x["cod"] == "404":
+                    await ctx.reply("City not found...")
+                if not unit or unit.lower() == "metric":
+                    embed.add_field(name="Temperature {x}:".format(x="(°C)"),
+                                    value=round((float(y["temp"]) - 273.15), 1))
+                    embed.add_field(name="Pressure {y}:".format(y="(hPa)"), value=y["pressure"])
+                    embed.add_field(name="Humidity (%):", value=y["humidity"])
+                    await ctx.reply(embed=embed)
+                if unit.lower() == "imperial":
+                    embed.add_field(name="Temperature {x}:".format(x="(°F)"),
+                                    value=round(1.8 * (float(y["temp"]) - 273.15) + 32, 1))
+                    embed.add_field(name="Pressure {y}:".format(y="(Hg)"),
+                                    value=round(float(y["pressure"]) * 0.02953, 1))
+                    embed.add_field(name="Humidity (%):", value=y["humidity"])
+                    await ctx.reply(embed=embed)
+
+    @commands.command(name="argtest")
+    async def test(self, ctx, arg1, arg2=None):
+        if not arg2:
+            await ctx.reply("arg2 is none :(")
+        else:
+            await ctx.reply(arg1 + arg2)
 
 
 async def setup(bot):
