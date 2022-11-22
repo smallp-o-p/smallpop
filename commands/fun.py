@@ -2,6 +2,7 @@ import aiohttp
 from discord.ext import commands
 import asyncio
 import discord
+import inspirobot
 
 weather_token = open(r".\tokens\weathertoken.txt").readline()
 
@@ -43,13 +44,18 @@ class Fun(commands.Cog):
                     embed.add_field(name="Humidity (%):", value=y["humidity"])
                     await ctx.reply(embed=embed)
 
-    @commands.command(name="argtest")
-    async def test(self, ctx, arg1, arg2=None):
-        if not arg2:
-            await ctx.reply("arg2 is none :(")
-        else:
-            await ctx.reply(arg1 + arg2)
+    @commands.command(name="inspiration")
+    async def inspire(self, ctx):
+        quote = inspirobot.generate()
+        embed = discord.Embed(title="Feeling down? Here is some inspiration.", color= discord.Color.random())
+        embed.set_image(url=quote.url)
+        await ctx.reply(embed=embed)
 
+    @commands.command(name="sadge")
+    async def sadge(self,ctx):
+        embed = discord.Embed(title="Sadge")
+        embed.set_image(url="attachment://sadge.png")
+        await ctx.reply(file=discord.File(r".\funnypictures\sadge.png", filename="sadge.png"), embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Fun(bot))
