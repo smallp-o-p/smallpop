@@ -21,6 +21,7 @@ class Fun(commands.Cog):
             await ctx.reply(f'Hello {member.name}')
 
     @commands.command(name="weather")
+    @commands.cooldown(1, 1, commands.BucketType.guild)
     async def getweather(self, ctx, city: str, unit: str = None):
         weather_url = weather_base_url + "appid=" + weather_token + "&q=" + city
         async with aiohttp.ClientSession() as session:
@@ -36,7 +37,7 @@ class Fun(commands.Cog):
                     embed.add_field(name="Pressure {y}:".format(y="(hPa)"), value=y["pressure"])
                     embed.add_field(name="Humidity (%):", value=y["humidity"])
                     await ctx.reply(embed=embed)
-                if unit.lower() == "imperial":
+                if str(unit).lower() == "imperial":
                     embed.add_field(name="Temperature {x}:".format(x="(°F)"),
                                     value=round(1.8 * (float(y["temp"]) - 273.15) + 32, 1))
                     embed.add_field(name="Pressure {y}:".format(y="(Hg)"),
@@ -56,6 +57,9 @@ class Fun(commands.Cog):
         embed = discord.Embed(title="Sadge")
         embed.set_image(url="attachment://sadge.png")
         await ctx.reply(file=discord.File(r".\funnypictures\sadge.png", filename="sadge.png"), embed=embed)
+
+
+
 
 async def setup(bot):
     await bot.add_cog(Fun(bot))
