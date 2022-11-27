@@ -22,8 +22,8 @@ class smallpop(commands.Bot):
 
     async def setup_hook(self) -> None:
         for cog in self.initial_exts:
-            print(cog + " loaded")
             await self.load_extension(cog)
+            print(cog + " loaded")
 
 
 async def main():
@@ -41,7 +41,6 @@ async def main():
             exts.append("commands." + cog[:-3])
     async with smallpop(initial_exts=exts, command_prefix=prefix, intents=intents) as bot:
         await bot.start(token=token)
-
 
 
 asyncio.run(main())
