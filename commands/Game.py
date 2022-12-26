@@ -3,7 +3,7 @@ import discord
 import sqlite3
 from discord import app_commands
 
-connection = sqlite3.connect(r"C:\Users\legio\PycharmProjects\pythonProject\dbs\sensdata.db")
+connection = sqlite3.connect(r"filepath")
 cursor = connection.cursor()
 cursor.execute('CREATE TABLE IF NOT EXISTS sens(game text, multiplier float)')
 connection.commit()
