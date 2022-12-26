@@ -28,7 +28,7 @@ class Fun(commands.Cog):
             async with session.get(weather_url) as answer:
                 x = await answer.json()
                 y = x["main"]
-                embed = discord.Embed(title="Weather in " + city.capitalize() + "!")
+                embed = discord.Embed(title="Weather in {}!".format(city.capitalize()) + "!")
                 if x["cod"] == "404":
                     await ctx.reply("City not found...")
                 if not unit or unit.lower() == "metric":
@@ -52,13 +52,11 @@ class Fun(commands.Cog):
         embed.set_image(url=quote.url)
         await ctx.reply(embed=embed)
 
-    @commands.command(name="sadge")
-    async def sadge(self,ctx):
-        embed = discord.Embed(title="Sadge")
-        embed.set_image(url="attachment://sadge.png")
-        await ctx.reply(file=discord.File(r".\funnypictures\sadge.png", filename="sadge.png"), embed=embed)
-
-
+    @commands.command(name="emote")
+    async def emote(self,ctx, arg: str):
+        embed = discord.Embed(title=arg.capitalize())
+        embed.set_image(url="attachment://{}.png".format(arg.lower()))
+        await ctx.reply(file=discord.File(r".\funnypictures\{}.png".format(arg.lower()), filename="{}.png".format(arg.lower())), embed=embed)
 
 
 async def setup(bot):

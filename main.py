@@ -25,7 +25,6 @@ class smallpop(commands.Bot):
             await self.load_extension(cog)
             print(cog + " loaded")
 
-
 async def main():
     handler = logging.handlers.RotatingFileHandler(
         filename='discord.log',
