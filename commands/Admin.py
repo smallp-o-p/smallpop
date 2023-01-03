@@ -12,6 +12,7 @@ class Admin(commands.Cog):
                       "Example: $ch MyCategory vc one two three \n"
                       "This will create voice channels 'one', 'two', 'three' under category MyCategory")
     @commands.has_guild_permissions(manage_channels=True)
+    @commands.bot_has_guild_permissions(manage_channels=True)
     async def maketxtchannels(self, ctx, category: str = commands.parameter(description="Category to create"),
                               type: str = commands.parameter(default="vc", description="vc for voice or txt for text"),
                               *names: str):
@@ -37,6 +38,7 @@ class Admin(commands.Cog):
 
     @commands.command(name="delch")
     @commands.has_guild_permissions(manage_channels=True)
+    @commands.bot_has_guild_permissions(manage_channels=True)
     async def deletechannel(self, ctx, *channels):
         guild = ctx.guild
         for channel in channels:
@@ -49,6 +51,7 @@ class Admin(commands.Cog):
 
     @commands.command(name="mute")
     @commands.has_guild_permissions(mute_members=True)
+    @commands.bot_has_guild_permissions(mute_members=True)
     async def mute(self, ctx, member: discord.Member, time : str):
         guild = ctx.guild
         rolecheck = discord.utils.get(guild.roles, name="Muted")
@@ -57,7 +60,8 @@ class Admin(commands.Cog):
         await member.add_roles(rolecheck)
         await ctx.send(member.mention + " muted lol")
 
-    @commands.command(name="sync")
+    @commands.command(name="sync", help="syncs command tree, don't use pls")
+    @commands.has_permissions(administrator=True)
     async def sync(self,ctx) -> None:
         await ctx.bot.tree.sync()
         await ctx.reply("Synced!")
