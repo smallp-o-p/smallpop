@@ -8,10 +8,10 @@ class Listener(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
-        em = discord.Embed(title="listen here fucko",
-                           description="there's an error",
+        em = discord.Embed(title="Something went wrong!",
+                           description="Please read the error message to see what the issue is. :)",
                            color=discord.Color.red())
-        em.add_field(name="error:", value=error)
+        em.add_field(name="Error:", value=error)
         await ctx.send(embed=em)
 
 
