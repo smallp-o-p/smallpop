@@ -1,5 +1,5 @@
-from discord.ext import commands
 import discord
+from discord.ext import commands
 
 
 class Admin(commands.Cog):
@@ -62,9 +62,10 @@ class Admin(commands.Cog):
 
     @commands.command(name="sync", help="syncs command tree, don't use pls")
     @commands.has_permissions(administrator=True)
-    async def sync(self,ctx) -> None:
-        await ctx.bot.tree.sync()
-        await ctx.reply("Synced!")
+    async def sync(self, ctx: discord.ext.commands.Context) -> None:
+        synced = await ctx.bot.tree.sync(guild=ctx.guild)
+        await ctx.reply("Synced {} commands to the current guild!".format(len(synced)))
+        return
 
 
 async def setup(bot):
