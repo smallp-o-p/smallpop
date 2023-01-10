@@ -1,9 +1,11 @@
-from discord.ext import commands
-import discord
 import sqlite3
+import discord
 from discord import app_commands
+from discord.ext import commands
 
-connection = sqlite3.connect(r"filepath")
+
+connection = sqlite3.connect(r'filepath') # relative path doesn't work for some reason
+
 cursor = connection.cursor()
 cursor.execute("select game from sens") # gets all the games in the db
 games = [item[0] for item in cursor.fetchall()]

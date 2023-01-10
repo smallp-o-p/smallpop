@@ -1,8 +1,9 @@
-import aiohttp
-from discord.ext import commands
 import asyncio
+
+import aiohttp
 import discord
 import inspirobot
+from discord.ext import commands
 
 weather_token = open(r".\tokens\weathertoken.txt").readline()
 
@@ -22,7 +23,7 @@ class Fun(commands.Cog):
 
     @commands.command(name="weather")
     @commands.cooldown(1, 1, commands.BucketType.guild)
-    async def getweather(self, ctx, city: str, unit: str = None):
+    async def getweather(self, ctx: discord.ext.commands.Context, city: str, unit: str = None):
         weather_url = weather_base_url + "appid=" + weather_token + "&q=" + city
         async with aiohttp.ClientSession() as session:
             async with session.get(weather_url) as answer:
@@ -46,14 +47,14 @@ class Fun(commands.Cog):
                     await ctx.reply(embed=embed)
 
     @commands.command(name="inspiration")
-    async def inspire(self, ctx):
+    async def inspire(self, ctx: discord.ext.commands.Context):
         quote = inspirobot.generate()
         embed = discord.Embed(title="Feeling down? Here is some inspiration.", color= discord.Color.random())
         embed.set_image(url=quote.url)
         await ctx.reply(embed=embed)
 
     @commands.command(name="emote")
-    async def emote(self,ctx, arg: str):
+    async def emote(self, ctx: discord.ext.commands.Context, arg: str):
         embed = discord.Embed(title=arg.capitalize())
         embed.set_image(url="attachment://{}.png".format(arg.lower()))
         await ctx.reply(file=discord.File(r".\funnypictures\{}.png".format(arg.lower()), filename="{}.png".format(arg.lower())), embed=embed)
