@@ -24,11 +24,11 @@ class Voice(commands.Cog):
                 embed.add_field(name="Creator:", value=yt.author)
                 embed.set_image(url=yt.thumbnail_url)
                 stream = yt.streams.get_by_itag(251)
-                stream.download(output_path=r"C:\Users\legio\PycharmProjects\pythonProject\funnypictures",
+                stream.download(output_path=r"filepath\funnypictures",
                                 filename="{}.mp4".format(yt.title.lower().replace(" ", "_")))
                 vc.play(discord.FFmpegOpusAudio(
-                    executable=r"C:\Users\legio\PycharmProjects\pythonProject\FFMPEG\bin\ffmpeg.exe",
-                    source=r"C:\Users\legio\PycharmProjects\pythonProject\funnypictures\{}.mp4".format(
+                    executable=r"filepath\ffmpeg.exe",
+                    source=r"filepath\{}.mp4".format(
                         yt.title.lower().replace(" ", "_"))))
                 await ctx.send(embed=embed)
 
